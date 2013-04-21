@@ -1,0 +1,283 @@
+<!doctype html>
+<html data-ng-app="dragdrop">
+	<head>
+		<title>Drag and drop</title>
+		<link rel="stylesheet" type="text/css" href="css/bootstrap.css"/>
+		<link rel="stylesheet" type="text/css" href="css/bootstrap-responsive.css"/>
+		<link rel="stylesheet" type="text/css" href="css/style.css"/>
+		<link rel="stylesheet" type="text/css" href="css/prettify.css" />
+	</head>
+
+	<body data-ng-controller="mainCtrl">
+		<div class="navbar navbar-fixed-top">
+		  <div class="navbar-inner">
+			<div class="container">
+			  <a class="brand" href="#">AngularJS Bootstrap Form Builder</a>
+			</div>
+		  </div>
+		</div>
+
+		<div class="container" >
+			<div class="row" >
+				<div class="span6">
+					<h2>Form</h2>
+					<hr />
+					<div  data-render="render">
+						<form id="form" class="form-horizontal">
+							<fieldset>
+								<legend>Legend</legend>
+								<div id="userControls" data-sortable="formControls" data-render-source="formControls">
+									<div class="control" data-ng-repeat="control in formControls">
+										<div data-ng-include src="control.template"
+											 data-bs-popover="control.popoverTemplate"
+											 data-unique="1"
+											 data-title="control.label"></div>
+									</div>
+								</div>
+							</fieldset>
+						</form>
+					</div>
+				</div>
+				<div class="span6">
+					<h2>Drag & Drop controls</h2>
+					<hr />
+					<div data-tabs>
+						<div data-pane data-ng-repeat="pane in panes" data-heading="{{pane.title}}" data-active="pane.active">
+							<div data-ng-include src="pane.content"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<footer>
+			<div  class="container">
+			<hr>
+			Based on work by Adam Moore (@minikomi).<br>
+			Source on (<a href="https://github.com/minikomi/Bootstrap-Form-Builder">Github</a>).
+			</div>
+		</footer>
+
+		<script type="text/ng-template" id="input.html">
+			<form id="controls" class="form-horizontal">
+				<div data-ng-repeat="control in pane.controls"
+					 	data-draggable=""
+						data-control="control"
+						data-ng-include src="control.template">
+				</div>
+			</form>
+		</script>
+
+		<script type="text/ng-template" id="render.html">
+			<h3>Rendered source of your form:</h3>
+
+			<textarea id="render" class="span6">{{render}}</textarea>
+		</script>
+
+		<script type="text/ng-template" id="about.html"><!--test change-->
+			<p>Created by Matt Boydstun, based off of work by Adam Moore (<a href="https://twitter.com/minikomi">@minikomi</a>)</p>
+			<p>
+				I wanted to get familiar with AngularJS, and using an existing design seemed like a good way to do it.
+				AngularJS is an amazing tool for 99% of the job. For the other 1% it makes things very difficult.
+				Thanks to AngularJS, I got to write an amazing tool very quickly, with very few lines of code.
+				I will definately be using it for future projects.
+			</p>
+
+			<p>
+				<a href="license.txt">License</a> <br>
+				Permission is hereby granted, free of charge, to any person obtaining a copy of
+				this software and associated documentation files (the "Software"), to deal in
+				the Software without restriction, including without limitation the rights to
+				use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
+				of the Software, and to permit persons to whom the Software is furnished to do
+				so, subject to the following conditions:
+				<br>
+				The above copyright notice and this permission notice shall be included in all
+				copies or substantial portions of the Software.
+				<br>
+				THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+				IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+				FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+				AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+				LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+				OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+				SOFTWARE.
+			</p>
+		</script>
+
+		<script type="text/ng-template" id="control-text.html">
+			<div class="control-group">
+				<label class="control-label">{{control.label}}</label>
+				<div class="controls">
+					<input data-eatclick  id="{{control.id}}" type="{{control.type}}" placeholder="{{control.placeholder}}" class="span3 {{control.controlClass}}">
+					<span class="help-block">{{control.help}}</span>
+				</div>
+			</div>
+		</script>
+
+		<script type="text/ng-template" id="control-search.html">
+			<div class="control-group">
+				<label class="control-label">Search</label>
+				<div class="controls">
+					<input data-eatclick id="control-search" type="search" placeholder="placeholder" class=" input-medium search-query span3">
+					<span class="help-block">help</span>
+				</div>
+			</div>
+		</script>
+
+		<script type="text/ng-template" id="control-radio.html">
+			<div class="control-group">
+				<label class="control-label">{{control.label}}</label>
+				<div class="controls">
+					<label class="{{control.controlClass}}" data-ng-repeat="item in control.items">
+						<input data-eatclick-radio type="{{control.type}}" name="optionsRadios">
+						{{item}}
+					</label>
+				</div>
+			</div>
+		</script>
+
+		<script type="text/ng-template" id="control-select.html">
+			<div class="control-group">
+				<label class="control-label">{{control.label}}</label>
+				<div class="controls">
+					<select data-eatclick id="{{control.id}}">
+						<option data-ng-repeat="item in control.items">{{item}}</option>
+					</select>
+				</div>
+			</div>
+		</script>
+
+		<script type="text/ng-template" id="control-select-multiple.html">
+			<div class="control-group">
+				<label class="control-label">{{control.label}}</label>
+				<div class="controls">
+					<select multiple="multiple" id="{{control.id}}">
+						<option data-eatclick data-ng-repeat="item in control.items">{{item}}</option>
+					</select>
+				</div>
+			</div>
+		</script>
+
+		<script type="text/ng-template" id="control-single-button.html">
+			<div class="control-group">
+				<label class="control-label">{{control.label}}</label>
+				<div class="controls">
+					<button data-eatclick id={{control.id}} class="{{control.buttonClass}}">{{control.buttonText}}</button>
+				</div>
+			</div>
+		</script>
+
+		<script type="text/ng-template" id="control-double-button.html">
+			<div class="control-group" >
+				<label class="control-label">{{control.label}}</label>
+				<div class="controls">
+					<button data-eatclick id={{control.id}} class="{{control.buttonClass}}">{{control.buttonText}}</button>
+					<button data-eatclick id={{control.button2id}} class="{{control.button2Class}}">{{control.button2Text}}</button>
+				</div>
+			</div>
+		</script>
+
+		<Script type='text/ng-template' id='popover-text.html'>
+			<form name="popoverForm">
+				<label>ID / Name</label>
+				<input type="text" data-ng-model="control.id" >
+
+				<label>Label Text</label>
+				<input type="text" data-ng-model="control.label">
+
+				<label>Placeholder</label>
+				<input type="text" data-ng-model="control.placeholder">
+
+				<label>Help Text</label>
+				<input type="text" data-ng-model="control.help">
+				<div class="form-actions">
+					<button class="btn btn-primary" data-ng-click="popover.saved=true;dismiss()">Close</button>
+				</div>
+			</form>
+		</Script>
+
+		<Script type='text/ng-template' id='popover-radio.html'>
+			<form name="popoverForm">
+				<label>ID / Name</label>
+				<input type="text" data-ng-model="control.id">
+
+				<label>Label Text</label>
+				<input type="text" data-ng-model="control.label">
+
+				<label>Options</label>
+				<textarea rows="8" data-listvalues data-ng-model="control.items"></textarea>
+				<div class="form-actions">
+					<button class="btn btn-primary" data-ng-click="popover.saved=true;dismiss()">Close</button>
+				</div>
+			</form>
+		</Script>
+
+		<Script type='text/ng-template' id='popover-button.html'>
+			<form name="popoverForm">
+				<label>ID / Name</label>
+				<input type="text" data-ng-model="control.id">
+
+				<label>Label Text</label>
+				<input type="text" data-ng-model="control.label">
+
+				<label>Button Text</label>
+				<input type="text" data-ng-model="control.buttonText">
+
+				<label>Button Class</label>
+				<select data-ng-model="control.buttonClass" data-ng-options="item.class as item.name for item in items"></select>
+				<div class="form-actions">
+					<button class="btn btn-primary" data-ng-click="popover.saved=true;dismiss()">Close</button>
+				</div>
+			</form>
+		</Script>
+
+		<Script type='text/ng-template' id='popover-double-button.html'>
+			<form name="popoverForm">
+				<label>ID / Name</label>
+				<input type="text" data-ng-model="control.id">
+
+				<label>Label Text</label>
+				<input type="text" data-ng-model="control.label">
+
+				<label>Button Text</label>
+				<input type="text" data-ng-model="control.buttonText">
+
+				<label>Button Class</label>
+				<select data-ng-model="control.buttonClass" data-ng-options="item.class as item.name for item in items"></select>
+
+				<label>Button 2 Text</label>
+				<input type="text" data-ng-model="control.button2Text">
+
+				<label>Button 2 Class</label>
+				<select data-ng-model="control.button2Class" data-ng-options="item.class as item.name for item in items"></select>
+				<div class="form-actions">
+					<button class="btn btn-primary" data-ng-click="popover.saved=true;dismiss()">Close</button>
+				</div>
+			</form>
+		</Script>
+		
+		<script src="js/vendor/jquery-1.9.1.min.js"></script>
+		<script src="js/vendor/jquery-ui-1.10.2.custom.min.js"></script>
+		<script src="js/vendor/jquery-simulate.min.js"></script>
+		<script src="js/vendor/bootstrap.min.js"></script>
+		<script src="js/vendor/angular.min.js"></script>
+		<script src="js/vendor/ui-bootstrap-custom-tpls.min.js"></script>
+		<script src="js/vendor/angular-strap.min.js"></script>
+
+		<script src="js/data/button-classes.js"></script>
+		<script src="js/data/input-controls.js"></script>
+		<script src="js/data/radio-controls.js"></script>
+		<script src="js/data/select-controls.js"></script>
+		<script src="js/data/button-controls.js"></script>
+
+		<script src="js/main.js"></script>
+
+		<script src="js/directives/draggable.js"></script>
+		<script src="js/directives/eat-click.js"></script>
+		<script src="js/directives/list-values.js"></script>
+		<script src="js/directives/sortable.js"></script>
+		<script src="js/directives/render.js"></script>
+
+	</body>
+</html>
