@@ -1,5 +1,3 @@
-// don't look at this one :(
-
 app.directive('render', function(){
 	return {
 		restrict: 'A',
